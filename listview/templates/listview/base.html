@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.1/css/bootstrap.css"
+    integrity="sha512-Ty5JVU2Gi9x9IdqyHN0ykhPakXQuXgGY5ZzmhgZJapf3CpmQgbuhGxmI4tsc8YaXM+kibfrZ+CNX4fur14XNRg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css"
+    integrity="sha512-ARJR74swou2y0Q2V9k0GbzQ/5vJ2RBSoCWokg4zkfM29Fb3vZEQyv0iWBMW/yvKgyHSR/7D64pFMmU8nYmbRkg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+    href="https://fonts.googleapis.com/css?family=Lato"
+    rel="stylesheet"
+  />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+  />
+  <link rel="stylesheet" href="./style.css" />
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
+
+  {% load static %}
+
+  <script src="{% static 'base.js' %}"></script>
+  <link rel="icon" href="{% static 'favicon.ico' %}">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+    integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="{% static 'base.css' %}" />
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <title>Certificate Manager</title>
+</head>
+
+
+<body>
+  <!-- Alert -->
+<div class="hide" style="display: none;">
+  <div id="alert-popup" class="popup alert alert-warning alert-dismissible fade show hide" role="alert">
+    <h6 id="popup-message">hello</h6>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+</div>
+
+  <!-- Loader Overlay  -->
+
+  <div id="loading-overlay">
+    <div class="loading-icon" ></div>
+  </div>
+
+    <!-- Header Controls -->
+
+  <!-- <header id="prev-head" style="display:none">
+    <div class="h-left">
+      <h5> <span><a href="/" class="pages p-active">Leads</a></span>{% if user.is_superuser %} / <span><a href="/users"
+            class="pages">Users</a></span> / <span><a href="/approvals"> Approvals</a></span>{% endif %}  </h5>
+      <a href="/" class="text-primary">
+        <h2>Rocket Singh</h2>
+      </a>
+      <div class="lower-text">
+        <p>Customer Relation Management Solution</p>
+      </div>
+    </div>
+    <div class="h-right">
+      <div class="modal-group flex-right">
+        <div class="btn btn-success">
+          Hello, {{ user.email }}
+        </div>
+        {% if user.is_superuser %}
+        <button type="button" id="new-user" data-toggle="modal" data-target="#newUserModal" class="btn-modal">
+          <i class="far fa-user"></i> Create User
+        </button>
+        {% endif %}
+        <button type="button" id="new" data-toggle="modal" data-target="#myModal" class="btn-modal">
+          <i class="far fa-file"></i> New Record
+        </button>
+  </header> -->
+
+
+  <!-- New Header  -->
+
+  <header>
+    <nav>
+      <div class="nav-left">
+
+        <h2>
+          <i class="fas fa-folder-minus"></i> Certificates Manager</h2>
+        <ul class="nav-pages">
+          <li class="nav-item">
+            <a href="/" class="active">Activities</a>
+          </li>
+          {% if user.is_superuser %}
+          <li class="nav-item">
+            <a href="/users">Users</a>
+          </li>
+          <li class="nav-item">
+            <a href="/approvals">Approvals</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="nav-right">
+        <div class="search-box">
+          <form method="get" class="">
+            <input type="text" id="tags" class="tags search-field" name="search-name"
+            placeholder="Search here">
+            <button type="submit"
+            name=""
+            class="btn-search" name="">
+            <i class="fas fa-search"></i>
+            </button>
+          </form>
+        </div>
+        {% if user.is_superuser %}
+        <button type="button" id="new-user" data-toggle="modal" data-target="#newUserModal" class="btn-modal">
+          <i class="far fa-user"></i> Create User
+        </button>
+        {% endif %}
+        <button type="button" id="new" data-toggle="modal" data-target="#myModal" class="btn-modal">
+          <i class="far fa-file"></i> New Record
+        </button>
+        <form action="/user/logout/" method="post">
+          {% csrf_token %}
+          <button type="submit" id="logout-button" class="btn-modal btn-danger" data-toggle="tooltip"
+            data-placement="bottom" title="Log Out">
+            <i class="fas fa-power-off"></i>
+          </button>
+        </form>
+
+      </div>
+
+    </nav>
+  </header>
+
+
+
+  <!-- Table list Details  -->
+
+  <div class="main-body">
+    <div class="task-button" data-toggle="modal" data-target="#myModal">
+      <i class="fas fa-plus"></i>
+    </div>
+    <div class="drag-container">
+      <ul class="drag-list">
+        <li class="drag-column drag-column-on-hold">
+          <span class="drag-column-header">
+            <h2>On hold</h2>
+          </span>
+          <div class="drag-options" id="options1"></div>
+
+          <ul class="drag-inner-list" id="1" data-id="Hold">
+            {% for data in todos %}
+
+            <li  data-id="{{ data.id }}" class="drag-box">
+              <div
+                  class="drag-item"
+                  data-toggle="modal"
+                  data-target="#exampleModalCenter"
+                  data-name="{{ data.name }}" data-company="{{ data.company }}" data-email="{{ data.user_mail }}"
+                  data-phone="{{ data.phone }}" data-description="{{ data.description }}"  data-id="{{ data.id }}"
+                  data-status="{{ data.task_status }}" data-urls="{{ data.upload }}" data-flookupdescription="{{ data.flookup_description}}"
+                  data-flookupurls="{{ data.flookup_uploads }}" data-certificate_name="{{ data.certificate_name }}" data-certificate_type="{{ data.certificate_type }}" data-title="{{data.title}}"
+              >
+
+                    <h3 class="drag-item-title">{{data.title}}</h3>
+              </div>
+                <div class="item-bottom">
+                  {{data.name}}
+                  <div>
+                    {% if user.is_superuser %}
+                  <button type="button" id="send-email-button" data-email="{{data.user_mail}}"  data-toggle="modal" data-target=".myEmail" class="btn-icon send-email-button">
+                    <i class="far fa-envelope"></i></button>
+                  {% endif %}
+                  <button class="btn-icon btn-dlt" id="delete-record" onclick="event.stopPropagation();deletecustomerfunction(this);">
+                    <i class="far fa-trash-alt"></i>
+                      <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="name" class="user-id" value="{{data.id}}" id="btn-delete">
+                      </form>
+
+                    </i>
+                  </button>
+                  </div>
+
+                </div>
+        </li>
+
+
+            {% endfor %}
+
+          </ul>
+        </li>
+        <li class="drag-column drag-column-in-progress">
+          <span class="drag-column-header">
+            <h2>In Progress</h2>
+          </span>
+          <div class="drag-options" id="options2"></div>
+          <ul class="drag-inner-list" id="2" data-id="Progress">
+            {% for data in progress %}
+
+            <li  data-id="{{ data.id }}" class="drag-box">
+              <div
+                  class="drag-item"
+                  data-toggle="modal"
+                  data-target="#exampleModalCenter"
+                  data-name="{{ data.name }}" data-company="{{ data.company }}" data-email="{{ data.user_mail }}"
+                  data-phone="{{ data.phone }}" data-description="{{ data.description }}"  data-id="{{ data.id }}"
+                  data-status="{{ data.task_status }}" data-urls="{{ data.upload }}" data-flookupdescription="{{ data.flookup_description}}"
+                  data-flookupurls="{{ data.flookup_uploads }}" data-certificate_name="{{ data.certificate_name }}" data-certificate_type="{{ data.certificate_type }}" data-title="{{data.title}}"
+              >
+
+                    <h3 class="drag-item-title">{{data.title}}</h3>
+              </div>
+                <div class="item-bottom">
+                  {{data.name}}
+                  <div>
+                    {% if user.is_superuser %}
+                  <button type="button" id="send-email-button" data-email="{{data.user_mail}}"  data-toggle="modal" data-target=".myEmail" class="btn-icon send-email-button">
+                    <i class="far fa-envelope"></i></button>
+                  {% endif %}
+                  <button class="btn-icon btn-dlt" id="delete-record" onclick="event.stopPropagation();deletecustomerfunction(this);">
+                    <i class="far fa-trash-alt"></i>
+                      <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="name" class="user-id" value="{{data.id}}" id="btn-delete">
+                      </form>
+
+                    </i>
+                  </button>
+                  </div>
+
+                </div>
+        </li>
+
+
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="drag-column drag-column-needs-review">
+          <span class="drag-column-header">
+            <h2>Needs Review</h2>
+          </span>
+          <div class="drag-options" id="options3" ></div>
+          <ul class="drag-inner-list" id="3" data-id="Review">
+            {% for data in review %}
+
+            <li  data-id="{{ data.id }}" class="drag-box">
+              <div
+                  class="drag-item"
+                  data-toggle="modal"
+                  data-target="#exampleModalCenter"
+                  data-name="{{ data.name }}" data-company="{{ data.company }}" data-email="{{ data.user_mail }}"
+                  data-phone="{{ data.phone }}" data-description="{{ data.description }}"  data-id="{{ data.id }}"
+                  data-status="{{ data.task_status }}" data-urls="{{ data.upload }}" data-flookupdescription="{{ data.flookup_description}}"
+                  data-flookupurls="{{ data.flookup_uploads }}" data-certificate_name="{{ data.certificate_name }}" data-certificate_type="{{ data.certificate_type }}" data-title="{{data.title}}"
+              >
+
+                    <h3 class="drag-item-title">{{data.title}}</h3>
+              </div>
+                <div class="item-bottom">
+                  {{data.name}}
+                  <div>
+                    {% if user.is_superuser %}
+                  <button type="button" id="send-email-button" data-email="{{data.user_mail}}"  data-toggle="modal" data-target=".myEmail" class="btn-icon send-email-button">
+                    <i class="far fa-envelope"></i></button>
+                  {% endif %}
+                  <button class="btn-icon btn-dlt" id="delete-record" onclick="event.stopPropagation();deletecustomerfunction(this);">
+                    <i class="far fa-trash-alt"></i>
+                      <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="name" class="user-id" value="{{data.id}}" id="btn-delete">
+                      </form>
+
+                    </i>
+                  </button>
+                  </div>
+
+                </div>
+        </li>
+
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="drag-column drag-column-approved">
+          <span class="drag-column-header">
+            <h2>Approved</h2>
+          </span>
+          <div class="drag-options" id="options4"></div>
+          <ul class="drag-inner-list" id="4" data-id="Approved">
+            {% for data in approved %}
+
+            <li  data-id="{{ data.id }}" class="drag-box">
+                  <div
+                      class="drag-item"
+                      data-toggle="modal"
+                      data-target="#exampleModalCenter"
+                      data-name="{{ data.name }}" data-company="{{ data.company }}" data-email="{{ data.user_mail }}"
+                      data-phone="{{ data.phone }}" data-description="{{ data.description }}"  data-id="{{ data.id }}"
+                      data-status="{{ data.task_status }}" data-urls="{{ data.upload }}" data-flookupdescription="{{ data.flookup_description}}"
+                      data-flookupurls="{{ data.flookup_uploads }}" data-certificate_name="{{ data.certificate_name }}" data-certificate_type="{{ data.certificate_type }}" data-title="{{data.title}}"
+                  >
+
+                        <h3 class="drag-item-title">{{data.title}}</h3>
+                  </div>
+                    <div class="item-bottom">
+                      {{data.name}}
+                      <div>
+                        {% if user.is_superuser %}
+                      <button type="button" id="send-email-button" data-email="{{data.user_mail}}"  data-toggle="modal" data-target=".myEmail" class="btn-icon send-email-button">
+                        <i class="far fa-envelope"></i></button>
+                      {% endif %}
+                      <button class="btn-icon btn-dlt" id="delete-record" onclick="event.stopPropagation();deletecustomerfunction(this);">
+                        <i class="far fa-trash-alt"></i>
+                          <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="name" class="user-id" value="{{data.id}}" id="btn-delete">
+                          </form>
+
+                        </i>
+                      </button>
+                      </div>
+
+                    </div>
+            </li>
+
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+     <!-- Edit Record modal  -->
+
+
+    <div
+    class="modal fade"
+    id="exampleModalCenter"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+  <div class="modal-dialog modal-xl">
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">
+          Edit an existing Profile
+        </h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span class="btn-cross"><i class="fas fa-times"></i></span>
+        </button>
+      </div>
+      <!-- <form id="edit-details-form"> -->
+        {% if not user.is_superuser %}
+        <div class="modal-body" id='edit-modal'>
+          <!-- {% csrf_token %} -->
+
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="edit-name">Name</label>
+                <input type="text" class="form-control" id="edit-name" name="edit-name"  readonly/>
+                <h1 visibility: hidden id="edit-id">
+                  hidden
+                </h1>
+
+
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="edit-email">Email address</label>
+                <input type="email" class="form-control" id="edit-email" name="edit-email"  readonly/>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="edit-phone">Phone Number</label>
+                <input type="phone" class="form-control" id="edit-phone" name="edit-phone" readonly/>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="edit-company">Current Company</label>
+                <input type="text" class="form-control" id="edit-company" name="edit-company" readonly/>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group validation">
+                <label for="edit-description">Description</label>
+                <textarea class="form-control" id="edit-description" name="edit-description" placeholder="Enter Description"  rows="5"></textarea>
+                </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="edit-certificate_name">Certificate Name</label>
+                <input type="text" class="form-control" id="edit-certificate_name" name="edit-certificate_name" />
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control" id="edit-title" name="edit-title"  />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-connect-type">Type of certificate</label>
+            <select class="form-control" style="overflow: scroll;" id="edit-certificate_type"
+              name="edit-connect-type" >
+              <option value="15CACB">15CACB</option>
+                    <option value="Capital Contribution Certificate">Capital Contribution Certificate</option>
+                    <option value="Certificate for Transfer Pricing">Certificate for Transfer Pricing</option>
+                    <option value="Certificate issued for Bank">Certificate issued for Bank</option>
+                    <option value="Certificate Issued for Claim of Refund under GST">Certificate Issued for Claim of Refund under GST</option>
+                    <option value="Certificate issued for Insurance Companies">Certificate issued for Insurance Companies</option>
+                    <option value="Certificate Issued under GST">Certificate Issued under GST</option>
+                    <option value="Certificate Issued under LLP Act">Certificate Issued under LLP Act</option>
+                    <option value="Certificate issued under RERA">Certificate issued under RERA</option>
+                    <option value="Certificate of Liquid Assets u/s 45-IB of the RBI">Certificate of Liquid Assets u/s 45-IB of the RBI</option>
+                    <option value="Certificate required under the Income Tax act">Certificate required under the Income Tax act</option>
+                    <option value="Claiming deductions and exemptions under various Rules and Regulations">Claiming deductions and exemptions under various Rules and Regulations</option>
+                    <option value="Fair Value certificate of Shares of the Company for Transfer of Shares from Resident to Non-resident">Fair Value certificate of Shares of the Company for Transfer of Shares from Resident to Non-resident</option>
+                    <option value="Fair Value of Shares for Merger/De-merger">Fair Value of Shares for Merger/De-merger</option>
+                    <option value="Funds/Grants utilisation certificate">Funds/Grants utilisation certificate</option>
+                    <option value="KYC Certifications">KYC Certifications</option>
+                    <option value="MCA ">MCA </option>
+                    <option value="Net Working Capital Certificate">Net Working Capital Certificate</option>
+                    <option value="Net Worth Certificate">Net Worth Certificate</option>]
+                    <option value="Net worth Certificate for Bank finances">Net worth Certificate for Bank finances</option>
+                    <option value="Net worth Certificate for Bank Guarantee">Net worth Certificate for Bank Guarantee</option>
+                    <option value="Other Valuations">Other Valuations</option>
+                    <option value="RBI Certifications">RBI Certifications</option>
+                    <option value="Sources of Income Certificate">Sources of Income Certificate</option>
+                    <option value="Statutory records under the Companies Act 2013 and applicable provisions">Statutory records under the Companies Act 2013 and applicable provisions</option>
+                    <option value="Turnover Certificate">Turnover Certificate</option>
+                    <option value="MCA ">MCA </option>
+                    <option value="Valuation of Account Receivables">Valuation of Account Receivables</option>
+                    <option value="Valuation of Account Receivables +">Valuation of Account Receivables +</option>
+                    <option value="Valuation of CCPS">Valuation of CCPS</option>
+                    <option value="Valuation of Debentures">Valuation of Debentures</option>
+                    <option value="Valuation of Equity Shares">Valuation of Equity Shares</option>
+                    <option value="Valuation of Fixed Assets">Valuation of Fixed Assets</option>
+                    <option value="Valuation of Fixed Assets +">Valuation of Fixed Assets +</option>
+                    <option value="Valuation of Inventory">Valuation of Inventory</option>
+                    <option value="Valuation of Inventory +">Valuation of Inventory +</option>
+                    <option value="Valuation of Security Deposits">Valuation of Security Deposits</option>
+                    <option value="Valuation of Security Deposits">Valuation of Security Deposits</option>
+            </select>
+          </div>
+
+
+
+
+          <input type="file" id="file" class="file" name="file"  multiple="multiple"/>
+
+                <h4  visibility: hidden class="uploads" id="show_uploads"> </h4>
+                <div id="spinner"></div>
+          <div>
+            <ul id="myuploadList" class="myuploadlist">
+              <li class="upload">UPLOADS</li>
+            </ul>
+            <ul id="myList">
+              <li class="uploads up-standard">No uploaded files</li>
+            </ul>
+
+            <div class="edit-bottom eb-standard">
+              <div class="flookup_section">
+                <h3>Flookup Section</h3>
+                {% if user.is_superuser %}
+                <textarea class="form-control" id="edit-flookupdescription" name="edit-flookupdescription" placeholder="Enter Description"  rows="5" ></textarea>
+                <input type="file" id="flookup_file" class="flookup_file"  multiple="multiple" />
+                {% else %}
+                <textarea class="form-control" id="edit-flookupdescription" name="edit-flookupdescription" placeholder="Enter Description"  rows="5" readonly></textarea>
+
+
+                {% endif %}
+
+                      <h4  visibility: hidden class="uploads" id="show_flookup_uploads"> </h4>
+
+                <div>
+                  {% if user.is_superuser %}
+                  <ul id="flookup_myuploadList" class="myuploadlist">
+                    <li class="upload">UPLOADS</li>
+                  </ul>
+                  {% endif %}
+                  <ul id="flookup_myList">
+                    <li class="uploads">No uploaded files</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="modal-body edit-main" id='edit-modal'>
+          <!-- {% csrf_token %} -->
+          <div class="edit-top">
+            <div class="edit-left">
+              <div class="col">
+                <div class="form-group validation">
+                  <label for="edit-description">Description</label>
+                  <textarea class="form-control" id="edit-description" name="edit-description" placeholder="Enter Descriptio"  rows="5" readonly></textarea>
+                  </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="edit-certificate_name">Certificate Name</label>
+                  <input type="text" class="form-control" id="edit-certificate_name" name="edit-certificate_name" readonly/>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="edit-title">Title</label>
+                  <input type="text" class="form-control" id="edit-title" name="edit-title"  readonly/>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="edit-cerrtificate_type">Type of certificate</label>
+                  <input class="form-control" id="edit-certificate_type"
+                    name="edit-certificate_type" readonly ></input>
+                </div>
+                <h4  visibility: hidden class="uploads" id="show_uploads"></h4>
+
+                <div>
+                  <label>Uploaded Files</label>
+                  <ul id="myList">
+                    <li class="uploads">No uploaded files</li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="edit-right">
+
+              <div class="col">
+                <h3 class="eright-head">User Details</h3>
+                <div class="form-group">
+                  <i class="far fa-user"></i>
+                  <input type="text" id="edit-name" name="edit-name"  readonly/>
+                  <h1 visibility: hidden id="edit-id">
+                    hidden
+                  </h1>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <i class="far fa-envelope"></i>
+                  <input type="email" id="edit-email" name="edit-email" readonly/>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <i class="fas fa-mobile-alt"></i>
+                  <input type="phone" id="edit-phone" name="edit-phone" readonly/>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <i class="far fa-building"></i>
+                  <input type="text" id="edit-company" name="edit-company"  readonly/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="edit-bottom">
+            <div class="flookup_section">
+              <h3>Flookup Section</h3>
+              {% if user.is_superuser %}
+              <textarea class="form-control" id="edit-flookupdescription" name="edit-flookupdescription" placeholder="Enter Description"  rows="5" ></textarea>
+              <input type="file" id="flookup_file" class="flookup_file"  multiple="multiple" />
+              {% else %}
+              <textarea class="form-control" id="edit-flookupdescription" name="edit-flookupdescription" placeholder="Enter Description"  rows="5" readonly></textarea>
+
+
+              {% endif %}
+
+                    <h4  visibility: hidden class="uploads" id="show_flookup_uploads"> </h4>
+
+              <div>
+                {% if user.is_superuser %}
+                <ul id="flookup_myuploadList" class="myuploadlist">
+                  <li class="upload">UPLOADS</li>
+                </ul>
+                {% endif %}
+                <ul id="flookup_myList">
+                  <li class="uploads">No uploaded files</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <div class="modal-footer">
+
+          <button type="submit" id="save-changes" class="btn btn-success" data-dismiss="modal">Save changes</button>
+
+        </div>
+
+    </div>
+  </div>
+  </div>
+
+
+   <!-- New record modal  -->
+
+
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true" id="myModal">
+
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Add New Record
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="btn-cross"><i class="fas fa-times"></i></span>
+          </button>
+        </div>
+        <div class="modal-body" id="new-modal">
+          <form id="add_data">
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+
+                  <label for="name">Name</label>
+                  {% if user.is_superuser %}
+                  <input type="text" class="form-control" id="name" name="username" placeholder="Enter the name" value={{user.username}} />
+                  {% else %}
+                  <input type="text" class="form-control" id="name" name="username" placeholder="Enter the name" value={{user.username}} readonly/>
+                  {% endif %}
+
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="email">Email address</label>
+                  {% if user.is_superuser %}
+                  <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value={{user.email}} />
+                  {% else %}
+                  <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value={{user.email}} readonly/>
+                  {% endif %}
+
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="form-group validation">
+                  <label for="phone">Phone Number</label>
+                  {% if user.is_superuser %}
+                  <input type="phone" class="form-control" id="phone" name="phone" placeholder="Enter phone number" value={{user.phone}} />
+                  {% else %}
+                  <input type="phone" class="form-control" id="phone" name="phone" placeholder="Enter phone number" value={{user.phone}} readonly/>
+                  {% endif %}
+
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="company">Current Company</label>
+                  {% if user.is_superuser %}
+                  <input type="text" class="form-control" id="company" name="company"
+                    placeholder="Enter your company" value={{user.company}} />
+                  {% else %}
+                  <input type="text" class="form-control" id="company" name="company"
+                    placeholder="Enter your company" value={{user.company}} readonly/>
+                    {% endif %}
+                </div>
+              </div>
+
+
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="certificate_name">Certificate Name</label>
+                  <input type="text" class="form-control" id="certificate_name" name="certificate_name"
+                    placeholder="Enter Certificate Name here" />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="current-role">Title</label>
+                  <input type="text" class="form-control" id="title" name="title"
+                    placeholder="Enter Title here" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="exampleFormControlSelect1">Type of Certificate</label>
+                  <select   class="form-control" style="overflow: scroll;" id="certificate_type"
+                    name="certificate_type">
+                    <option value="15CACB">15CACB</option>
+                    <option value="Capital Contribution Certificate">Capital Contribution Certificate</option>
+                    <option value="Certificate for Transfer Pricing">Certificate for Transfer Pricing</option>
+                    <option value="Certificate issued for Bank">Certificate issued for Bank</option>
+                    <option value="Certificate Issued for Claim of Refund under GST">Certificate Issued for Claim of Refund under GST</option>
+                    <option value="Certificate issued for Insurance Companies">Certificate issued for Insurance Companies</option>
+                    <option value="Certificate Issued under GST">Certificate Issued under GST</option>
+                    <option value="Certificate Issued under LLP Act">Certificate Issued under LLP Act</option>
+                    <option value="Certificate issued under RERA">Certificate issued under RERA</option>
+                    <option value="Certificate of Liquid Assets u/s 45-IB of the RBI">Certificate of Liquid Assets u/s 45-IB of the RBI</option>
+                    <option value="Certificate required under the Income Tax act">Certificate required under the Income Tax act</option>
+                    <option value="Claiming deductions and exemptions under various Rules and Regulations">Claiming deductions and exemptions under various Rules and Regulations</option>
+                    <option value="Fair Value certificate of Shares of the Company for Transfer of Shares from Resident to Non-resident">Fair Value certificate of Shares of the Company for Transfer of Shares from Resident to Non-resident</option>
+                    <option value="Fair Value of Shares for Merger/De-merger">Fair Value of Shares for Merger/De-merger</option>
+                    <option value="Funds/Grants utilisation certificate">Funds/Grants utilisation certificate</option>
+                    <option value="KYC Certifications">KYC Certifications</option>
+                    <option value="MCA ">MCA </option>
+                    <option value="Net Working Capital Certificate">Net Working Capital Certificate</option>
+                    <option value="Net Worth Certificate">Net Worth Certificate</option>]
+                    <option value="Net worth Certificate for Bank finances">Net worth Certificate for Bank finances</option>
+                    <option value="Net worth Certificate for Bank Guarantee">Net worth Certificate for Bank Guarantee</option>
+                    <option value="Other Valuations">Other Valuations</option>
+                    <option value="RBI Certifications">RBI Certifications</option>
+                    <option value="Sources of Income Certificate">Sources of Income Certificate</option>
+                    <option value="Statutory records under the Companies Act 2013 and applicable provisions">Statutory records under the Companies Act 2013 and applicable provisions</option>
+                    <option value="Turnover Certificate">Turnover Certificate</option>
+                    <option value="MCA ">MCA </option>
+                    <option value="Valuation of Account Receivables">Valuation of Account Receivables</option>
+                    <option value="Valuation of Account Receivables +">Valuation of Account Receivables +</option>
+                    <option value="Valuation of CCPS">Valuation of CCPS</option>
+                    <option value="Valuation of Debentures">Valuation of Debentures</option>
+                    <option value="Valuation of Equity Shares">Valuation of Equity Shares</option>
+                    <option value="Valuation of Fixed Assets">Valuation of Fixed Assets</option>
+                    <option value="Valuation of Fixed Assets +">Valuation of Fixed Assets +</option>
+                    <option value="Valuation of Inventory">Valuation of Inventory</option>
+                    <option value="Valuation of Inventory +">Valuation of Inventory +</option>
+                    <option value="Valuation of Security Deposits">Valuation of Security Deposits</option>
+                    <option value="Valuation of Security Deposits">Valuation of Security Deposits</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group validation">
+                  <label for="description">Description</label>
+                  <textarea type="description" class="form-control" id="description" name="description" placeholder="Enter Description"></textarea>
+                  </div>
+              </div>
+            </div>
+
+
+            <input type="file" id="new_record_file" class="new_record_file" name="new_record_file"  multiple="multiple"/>
+            <input  visibility: hidden name="new_show_uploads" class="uploads" id="new_show_uploads" > </input>
+
+          <div>
+            <ul id="new_myuploadList" class="myuploadlist">
+              <li class="new_upload">List of upload</li>
+            </ul>
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-success" onClick="add_data()" data-dismiss="modal">Add Details</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- New user modal  -->
+
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true" id="newUserModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="new-user-exampleModalLongTitle">
+            Add New Account
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="btn-cross"><i class="fas fa-times"></i></span>
+          </button>
+        </div>
+        <form id="new-user-form" method="post" action="/create_user">
+          <div class="modal-body">
+            {% csrf_token %}
+
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="new-user-name">Name</label>
+                  <input type="text" class="form-control" id="new-user-name" name="name" placeholder="Enter the name" />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="new-user-email">Email address</label>
+                  <input type="email" class="form-control" id="new-user-email" name="email"
+                    placeholder="name@example.com" />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="new-user-password">Password</label>
+                  <input type="password" class="form-control" id="new-user-password" name="password"
+                    placeholder="Password" />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="new-user-exampleFormControlSelect1">Access Level</label>
+                  <select class="form-control" id="new-user-exampleFormControlSelect1" name="access-level">
+                    <option>Standard</option>
+                    <option>Admin</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+              Close
+            </button>
+
+            <button type="submit" class="btn btn-success" onclick="send_new_user_data()" data-dismiss="modal">Create
+              New User</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Modal  -->
+
+
+  <div class="modal fade myEmail" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="myEdit">
+    <div class="modal-dialog modal-lg" style="z-index: 1000;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Send Emails
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="btn-cross"><i class="fas fa-times"></i></span>
+          </button>
+        </div>
+        <div class="modal-body mail-modal">
+          <form id="massmail-form">
+            {% csrf_token %}
+            <!-- <div class="form-group">
+              <label for="exampleFormControlSelect1">From</label>
+              <select class="form-control" id="exampleFormControlSelect1" name="sender">
+                {% for email in emails %}
+                <option>{{email.b_email}}</option>
+                {% endfor %}
+
+              </select>
+            </div> -->
+
+            <div class="form-group">
+              <label for="mail-values">To</label>
+              <input type="text" class="form-control" id="mail-values" placeholder="name@example.com" value="{{data.user_mail}}"
+                name="recipient">
+            </div>
+
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Subject</label>
+              <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="" name="subject">
+            </div>
+
+            <div class="form-group">
+              <label for="exampleFormControlTextarea1">Body</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="4" name="body"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Close
+              </button>
+              <button type="submit" onclick="sendmassmail()" class="btn btn-success">Send</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+
+
+    <!-- Creating new record and sending it to backend -->
+
+
+    <script src="https://unpkg.com/boxicons@2.1.1/dist/boxicons.js"></script>
+    <script>
+      function add_data() {
+        if (document.getElementById('certificate_name').value == '')
+          return
+        if (document.getElementById('email').value == ''){
+          return}
+        var frm = $('#add_data');
+
+        $.ajax({
+          type: "POST",
+          url: "/",
+          data:frm.serialize(),
+          success: function (response) {
+            location.reload(true);
+          }
+        });
+      }
+    </script>
+
+
+
+
+<!-- Creating new user and sending it to backend -->
+
+
+    <script>
+      function send_new_user_data() {
+        var frm = $('#new-user-form');
+        $.ajax({
+          type: "POST",
+          url: "/create_user",
+          data: frm.serialize(),
+          success: function (response) {
+            location.reload(true);
+          }
+
+        });
+      }
+    </script>
+
+
+
+
+<!-- Deleting record and sending it to backend -->
+
+
+    <script>
+      function deletecustomerfunction(elem) {
+        var user_id = elem.querySelector('.user-id').value
+
+        $.ajax({
+          type: "POST",
+          url: "/delete_record/",
+          data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            name: user_id,
+
+          },
+          success: function (response) {
+            location.reload(true);
+            document.getElementById('alert-popup').classList.remove('hide')
+            const message = `<strong>Alert:</strong> Selected customer details have been deleted`
+            document.getElementById('popup-message').innerHTML = message
+          }
+        });
+      }
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"
+      integrity="sha512-yDlE7vpGDP7o2eftkCiPZ+yuUyEcaBwoJoIhdXv71KZWugFqEphIS3PU60lEkFaz8RxaVsMpSvQxMBaKVwA5xg=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+
+   <!--  <script>
+      $(document).ready(function () {
+        $('.check-class').click(function () {
+          var txt = "";
+          $('.check-class:checked').each(function () {
+            txt += $(this).val() + ", "
+          });
+          $('#mail-values').val(txt);
+        });
+
+      });
+    </script>
+ -->
+
+
+
+ <!-- Sending mails to users through the app directly -->
+
+
+
+    <script>
+      function sendmassmail() {
+        var frm = $('#massmail-form');
+
+        $.ajax({
+          type: "POST",
+          url: "/massmail",
+          data: frm.serialize(),
+
+        });
+      }
+    </script>
+  <script>
+    /* function send_email(btn){
+      document.getElementById('mail-values').value = btn.dataset.email
+    } */
+    $('.send-email-button').click(function (){
+      $('#mail-values').val($(this).data('email'))
+    })
+  </script>
+
+<!-- partial -->
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/45226/dragula.min.js"></script>
+<script src="./script.js"></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"
+></script>
+
+
+
+
+<!-- Drag-drop functionality  -->
+
+
+{% if user.is_superuser %}
+<script>
+
+      dragula([
+        document.getElementById("1"),
+        document.getElementById("2"),
+        document.getElementById("3"),
+        document.getElementById("4"),
+        document.getElementById("5"),
+      ]).on('drop',function(el,target){
+
+        droppedid=el.dataset.id
+        droppedstatus=target.dataset.id
+        console.log(droppedid,target.dataset.id)
+        $.ajax({
+        url:"{% url 'Home' %}",
+        type:"GET",
+        data:{
+          droppedid:droppedid,
+          droppedstatus:droppedstatus
+
+        },
+        success:function(){
+              // location.reload(true)
+            }
+
+      })
+
+      })
+        .on("drag", function (el) {
+          // add 'is-moving' class to element being dragged
+          el.classList.add("is-moving");
+        })
+        .on("dragend", function (el) {
+          // remove 'is-moving' class from element after dragging has stopped
+          el.classList.remove("is-moving");
+
+          // add the 'is-moved' class for 600ms then remove it
+          window.setTimeout(function () {
+            el.classList.add("is-moved");
+            window.setTimeout(function () {
+              el.classList.remove("is-moved");
+            }, 600);
+          }, 100);
+        });
+
+
+
+</script>
+
+{% endif %}
+
+
+
+<!-- Editing record -->
+
+<script>
+
+  $('.drag-item').click(function () {
+
+    $('#edit-id').html($(this).data('id'));
+    $('#edit-name').val($(this).data('name'));
+    $('#edit-company').val($(this).data('company'));
+    $('#edit-email').val($(this).data('email'));
+    $('#edit-phone').val($(this).data('phone'));
+    $('#edit-certificate_name').val($(this).data("certificate_name"));
+    $('#edit-title').val($(this).data("title"));
+    $('#edit-certificate_type').val($(this).data("certificate_type"));
+    $('#edit-description').val($(this).data('description'));
+    $('#edit-flookupdescription').val($(this).data('flookupdescription'));
+
+    $('#myList').empty()
+    var seperate=$(this).data('urls').split(',');
+    if(seperate=="N"){
+      var node = document.createElement("LI");
+      node.className = "uploads";
+      var textnode = document.createTextNode("No files uploaded");
+      node.appendChild(textnode);
+      document.getElementById("myList").appendChild(node);
+    }
+
+    else{
+      for (let i = 0; i < seperate.length; i++) {
+        var node = document.createElement("LI");
+        var v="{{user.is_superuser}}"
+
+
+        if(v=="False"){
+        var delete_button = document.createElement("BUTTON");
+        delete_button.className="btn-clos";
+        delete_button.type="button"
+        delete_button.id="delete"+i
+        delete_button.innerHTML='<i class="far fa-times-circle"></i>'}
+        node.className = "uploads";
+
+        node.id="view"+i
+        var textnode = document.createTextNode(seperate[i]);
+        node.appendChild(textnode);
+
+
+        document.getElementById("myList").appendChild(node);
+        if(v=="False"){
+        document.getElementById("myList").appendChild(delete_button);}
+    }
+  }
+    $('#show_uploads').html($(this).data('urls'));
+
+    for (let i = 0; i < seperate.length; i++) {
+
+    $('#view'+i).click(function(){
+      $(this).css("color", "brown");
+      var link=$(this).text();
+      $.ajax({
+                url:"{% url 'open_files' %}",
+                type:"POST",
+                data:{
+                  link:link,
+                },
+                success:function(response){
+                  window.open(response);
+                    }
+
+              })
+
+    })
+
+    var id=$('#edit-id').html()
+    var v="{{user.is_superuser}}"
+    $('#delete'+i).click(function(){
+      $(this).css("color", "brown");
+      var x=document.getElementById("view"+i)
+      var y=document.getElementById("delete"+i)
+      var v="{{user.is_superuser}}"
+      $.ajax({
+              url:"{% url 'delete_files' %}",
+              type:"POST",
+              data:{
+                link:x.innerHTML,
+                id:id,
+                section:'client'
+              },
+              success:function(r){
+              alert("Deleting document")
+              x.remove()
+              y.remove()
+              document.getElementById("show_uploads").innerHTML = r.data;
+              }
+
+})
+
+    })}
+
+
+
+  $('#flookup_myList').empty()
+    var seperate=$(this).data('flookupurls').split(',');
+    if(seperate=="N"){
+      var node = document.createElement("LI");
+      node.className = "uploads";
+      var textnode = document.createTextNode("No files uploaded");
+      node.appendChild(textnode);
+      document.getElementById("flookup_myList").appendChild(node);
+    }
+
+    else{
+        for (let i = 0; i < seperate.length; i++) {
+            var node = document.createElement("LI");
+            var v="{{user.is_superuser}}"
+
+            if(v=="True"){
+            var delete_button = document.createElement("BUTTON");
+              delete_button.className="btn-clos";
+              delete_button.type="button"
+              delete_button.id="flookup_delete"+i
+              delete_button.innerHTML='<i class="far fa-times-circle"></i>'
+            }
+            node.className = "uploads";
+            node.id="flookup_view"+i
+            var textnode = document.createTextNode(seperate[i]);
+            node.appendChild(textnode);
+            document.getElementById("flookup_myList").appendChild(node);
+            if(v=="True"){
+            document.getElementById("flookup_myList").appendChild(delete_button);}
+        }
+    }
+    $('#show_flookup_uploads').html($(this).data('flookupurls'));
+    for (let i = 0; i < seperate.length; i++) {
+                $('#flookup_view'+i).click(function(){
+                $(this).css("color", "brown");
+                var link=$(this).text();
+                $.ajax({
+                    url:"{% url 'open_files' %}",
+                    type:"POST",
+                    data:{
+                    link:link,
+                    },
+                    success:function(response){
+                      window.open(response);
+                    }
+                })
+
+                })
+
+
+                $('#flookup_delete'+i).click(function(){
+                $(this).css("color", "brown");
+                var x=document.getElementById("flookup_view"+i)
+                var y=document.getElementById("flookup_delete"+i)
+                console.log("this is america")
+                console.log(x)
+
+                $.ajax({
+                    url:"{% url 'delete_files' %}",
+                    type:"POST",
+                    data:{
+                    link:x.innerHTML,
+                    id:id,
+                    section:'flookup'
+                    },
+                    success:function(r){
+                    alert("Deleting document")
+                    console.log(x)
+                    console.log(y)
+                    x.remove()
+                    y.remove()
+                    document.getElementById("show_flookup_uploads").innerHTML = r.data;
+                    }
+
+                })
+
+                })
+}
+
+
+  });
+
+
+</script>
+
+
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+
+
+<!-- Saving edited record to backend -->
+
+
+
+<script>
+  $('#save-changes').click(function () {
+    var id=$('#edit-id').html()
+    var description=$('#edit-description').val()
+    var title=$('#edit-title').val()
+    var certificate_type=$('#edit-certificate_type').val()
+    var certificate_name=$('#edit-certificate_name').val()
+    var flookup_description=$('#edit-flookupdescription').val()
+    // var urls=$('#edit-urls').html();
+    var ur=$('#show_uploads').html();
+    var uf=$('#show_flookup_uploads').html();
+
+  $.ajax({
+    url:"{% url 'Update' %}",
+    type:"POST",
+    data:{
+      id:id,
+      title:title,
+      description:description,
+      certificate_type:certificate_type,
+      certificate_name:certificate_name,
+      ur:ur,
+      uf:uf,
+      flookupdescription:flookup_description
+    }
+    ,
+    success:function(){
+          location.reload(true)
+        }
+
+  })
+})
+</script>
+
+
+
+
+
+<!-- Client uploading new files and sending it to AWS S3 -->
+
+<script>
+  $('#file').on('input',function(){
+    var id=$('#edit-id').html()
+    var form = $('#fileUploadForm')[0];
+    var datas = new FormData();
+    var files=$('#file')[0].files;
+
+    // var seperate=$(this).data('urls').split(',');
+        if(files.length==0){
+          var node = document.createElement("LI");
+          node.className = "uploads";
+          var textnode = document.createTextNode("No files uploaded");
+          node.appendChild(textnode);
+          document.getElementById("myuploadList").appendChild(node);
+        }
+
+        else{
+          // document.getElementById("spinner").className="spinner-border text-success"
+          datas.append('amount',files.length)
+    if(files.length > 0 ){
+
+      for(let n=0;n<files.length;n++)
+
+          datas.append('array'+n,files[n])
+      datas.append('file',files[0]);
+    }
+    datas.append('id',id)
+    datas.append("section","client")
+
+        for (let i = 0; i < files.length; i++) {
+        var node = document.createElement("LI");
+        var delete_button = document.createElement("BUTTON");
+
+          delete_button.className="spinner-border text-success";
+          // delete_button.type="button"
+          delete_button.id="uploading_delete"+i
+          // delete_button.innerHTML="X"
+        node.className = "uploads";
+
+        node.id="uploading_view"+i
+        var textnode = document.createTextNode(files[i].name);
+        node.appendChild(textnode);
+
+
+        document.getElementById("myuploadList").appendChild(node);
+        document.getElementById("myuploadList").appendChild(delete_button); }
+
+
+
+  $.ajax({
+    url:"{% url 'Upload' %}",
+    type:"POST",
+    enctype: 'multipart/form-data',
+    processData: false,
+    contentType: false,
+    cache: false,
+    data:datas,
+
+
+    success:function(response){
+
+      if(response.section=="client"){
+        $("button[id^='uploading_delete']").attr('class',"btn-clos");
+        // $("button[id^='uploading_delete']").html("X");
+        document.getElementById("file").value = "";
+        document.getElementById("show_uploads").innerHTML = response.data2;
+       }
+    }
+
+  })}
+  })
+</script>
+
+
+
+
+
+<!-- Admin uploading new files  and sending it to AWS S3 -->
+
+
+<script>
+  $('#flookup_file').on('input',function(){
+
+    var id=$('#edit-id').html()
+    var datas = new FormData();
+    var files=$('#flookup_file')[0].files;
+
+        if(files.length==0){
+          var node = document.createElement("LI");
+          node.className = "uploads";
+          var textnode = document.createTextNode("No files uploaded");
+          node.appendChild(textnode);
+          document.getElementById("flookup_myuploadList").appendChild(node);
+        }
+
+        else{
+
+          datas.append('amount',files.length)
+    if(files.length > 0 ){
+
+      for(let n=0;n<files.length;n++)
+
+          datas.append('array'+n,files[n])
+      datas.append('file',files[0]);
+    }
+    datas.append('id',id)
+    datas.append("section","flookup")
+
+        for (let i = 0; i < files.length; i++) {
+        var node = document.createElement("LI");
+        var delete_button = document.createElement("BUTTON");
+
+          delete_button.className="spinner-border text-success";
+          // delete_button.type="button"
+          delete_button.id="flookup_uploading_delete"+i
+          // delete_button.innerHTML="X"
+        node.className = "uploads";
+        node.id="flookup_uploading_view"+i
+        var textnode = document.createTextNode(files[i].name);
+        node.appendChild(textnode);
+        document.getElementById("flookup_myuploadList").appendChild(node);
+        document.getElementById("flookup_myuploadList").appendChild(delete_button); }
+
+
+  $.ajax({
+    url:"{% url 'Upload' %}",
+    type:"POST",
+    enctype: 'multipart/form-data',
+    processData: false,
+    contentType: false,
+    cache: false,
+    data:datas,
+    success:function(response){
+
+      $("button[id^='flookup_uploading_delete']").attr('class',"btn-clos");
+      // $("button[id^='flookup_uploading_delete']").html("X");
+      document.getElementById("flookup_file").value = "";
+      document.getElementById("show_flookup_uploads").innerHTML = response.data2;
+
+    }
+
+  })}
+  })
+</script>
+
+
+
+<!-- New record uploading new files and sending it to AWS S3 -->
+
+
+
+
+<script>
+  $('#new_record_file').on('input',function(){
+
+    var datas = new FormData();
+    var files=$('#new_record_file')[0].files;
+
+        if(files.length==0){
+          var node = document.createElement("LI");
+          node.className = "uploads";
+          var textnode = document.createTextNode("No files uploaded");
+          node.appendChild(textnode);
+          document.getElementById("new_myuploadList").appendChild(node);
+
+        }
+        else{
+
+          datas.append('amount',files.length)
+
+    if(files.length > 0 ){
+
+      for(let n=0;n<files.length;n++)
+
+          datas.append('array'+n,files[n])
+      datas.append('file',files[0]);
+    }
+
+
+        for (let i = 0; i < files.length; i++) {
+        var node = document.createElement("LI");
+        var delete_button = document.createElement("BUTTON");
+
+          delete_button.className="spinner-border text-success";
+          // delete_button.type="button"
+          delete_button.id="new_uploading_delete"+i
+
+        node.className = "uploads";
+        node.id="new_uploading_view"+i
+        var textnode = document.createTextNode(files[i].name);
+        node.appendChild(textnode);
+        document.getElementById("new_myuploadList").appendChild(node);
+        document.getElementById("new_myuploadList").appendChild(delete_button); }
+
+  $.ajax({
+    url:"{% url 'new_upload' %}",
+    type:"POST",
+    enctype: 'multipart/form-data',
+    processData: false,
+    contentType: false,
+    cache: false,
+    data:datas,
+
+
+    success:function(response){
+      // document.getElementById("spinner").className=""
+
+      $("button[id^='new_uploading_delete']").attr('class',"btn-clos");
+      // $("button[id^='new_uploading_delete']").html('<i class="fal fa-check"></i>');
+      document.getElementById("new_record_file").value = "";
+      $('#new_show_uploads').val(response.data2)
+
+    }
+
+  })}
+  })
+</script>
+
+</body>
+</html>

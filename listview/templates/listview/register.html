@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register | Certificate Manager</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'login.css' %}" />
+    <link rel="icon" href="{% static 'favicon.ico' %}" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="login">
+        <div class="login-box reg">
+          <h2>Register</h2>
+          {% if messages %}
+          <ul class="messages">
+            {% for message in messages %}
+            <li
+              {%
+              if
+              message.tags
+              %}
+              class="{{message.tags}} alerts"
+              {%
+              endif
+              %}
+            >
+              {{ message }}
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+          <form id="register-form" method="post" action="/approve_user">
+            {% csrf_token %}
+            <div class="user-box">
+              <input
+                type="text"
+                name="name"
+                required
+                class="myInput"
+                id="name"
+              />
+              <label>Name</label>
+              <div class="user-box">
+                <input
+                  type="text"
+                  name="email"
+                  required
+                  class="myInput"
+                  id="mail"
+                />
+                <label>E-mail Address</label>
+              </div>
+            </div>
+            <div class="user-box">
+              <input
+                type="password"
+                name="password1"
+                required
+                class="myInput"
+                id="pass"
+              />
+              <label>Password</label>
+            </div>
+            <div class="user-box">
+              <input
+                type="text"
+                name="phone"
+                required
+                class="myInput"
+                id="phone"
+              />
+              <label>Phone Number</label>
+            </div>
+            <div class="user-box">
+              <input
+                type="text"
+                name="company"
+                required
+                class="myInput"
+                id="company"
+              />
+              <label>Company</label>
+            </div>
+            <div class="btn-div">
+              <a
+                href="javascript:{}"
+                onclick="document.getElementById('register-form').submit()"
+                id="myBtn"
+                onclick="send_new_user_data()"
+                class="btn-submit"
+              >
+                Register
+              </a>
+            </div>
+          </form>
+          <div class="login-reg">
+            Already have an account? <a href="/user/login">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function send_new_user_data() {
+        var frm = $("#register-form");
+        $.ajax({
+          type: "POST",
+          url: "/approve_user",
+          data: frm.serialize(),
+          success: function (response) {
+            location.reload(true);
+          },
+        });
+      }
+    </script>
+    <!-- <script>
+      var input1 = document.querySelector("#name");
+      var input2 = document.querySelector("#mail");
+      var pass = document.querySelector("#pass");
+
+      input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          document.getElementById("myBtn").click();
+        }
+      });
+      pass.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          document.getElementById("myBtn").click();
+        }
+      });
+    </script> -->
+  </body>
+</html>

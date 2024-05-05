@@ -1,0 +1,305 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --blue: #5e72e4;
+  --indigo: #5603ad;
+  --purple: #8965e0;
+  --pink: #f3a4b5;
+  --red: #f5365c;
+  --orange: #fb6340;
+  --yellow: #ffd600;
+  --green: #1aae6f;
+  --deep-green: #2c9467;
+  --teal: #11cdef;
+  --cyan: #2bffc6;
+  --gray: #8898aa;
+  --gray-dark: #32325d;
+  --light: #ced4da;
+  --lighter: #e9ecef;
+  --primary: #5e72e4;
+  --secondary: #f4f5f7;
+  --success: #2dce89;
+  --info: #11cdef;
+  --warning: #fb6340;
+  --danger: #f5365c;
+  --light: #adb5bd;
+  --dark: #212529;
+  --default: #172b4d;
+  --white: #fff;
+  --neutral: #fff;
+  --darker: #000;
+}
+
+body {
+  font-family: "Nunito Sans", sans-serif;
+  line-height: 1.6;
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+header {
+  background: #ced4da;
+  /* background: linear-gradient(#141e30, #243b55); */
+  color: var(--darker);
+  padding: 30px 40px;
+  height: 25vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.h-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.h-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 700px;
+  align-items: flex-end;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.lower-text {
+  font-size: 20px;
+  color: var(--default);
+}
+
+.pages {
+  text-decoration: none;
+  color: var(--green);
+  cursor: pointer;
+}
+
+.pages:hover {
+  text-decoration: none;
+  color: rgba(65, 189, 135, 0.8);
+}
+
+.p-active {
+  font-weight: 700;
+}
+
+.text-primary,
+.text-primary:hover,
+h2 {
+  color: #172b4d;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 40px;
+}
+
+.btn-modal {
+  margin-right: 4px;
+  padding: 8px 16px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 4px;
+  background: var(--gray-dark);
+  color: #fff;
+}
+
+.btn-modal:hover {
+  background: #3e3e79;
+  color: #fff;
+}
+
+.btn-icon {
+  background: var(--green);
+  color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.btn-icon:hover {
+  background: var(--deep-green);
+}
+
+#search {
+  padding: 8px 10px;
+  margin-right: 4px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  font-size: 15px;
+}
+
+.main-body {
+  display: flex;
+  flex-direction: row;
+  height: 75vh;
+}
+
+.table-body {
+  width: 100%;
+}
+
+.filter-menu {
+  width: 30%;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
+  display: none;
+}
+
+.filter-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--green);
+  color: #fff;
+  padding: 10px 14px;
+}
+
+.filter-body {
+  padding: 10px 14px;
+}
+
+.multi_select_box {
+  width: 400px;
+}
+
+.modal {
+  height: 700px;
+}
+
+#btn-delete {
+  background: none;
+  border: none;
+  outline: none;
+  display: inline;
+}
+
+.flex-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#trash {
+  margin-right: 4px;
+}
+
+.slidecontainer {
+  margin-top: 6px;
+  padding-top: 20px;
+}
+
+#myRange {
+  /* -webkit-appearance: none; */
+
+  width: 100%;
+  height: 7px;
+  border-radius: 3px;
+}
+
+#filter-apply {
+  margin-top: 20px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  padding-right: 10px;
+  width: 360px;
+  align-items: flex-end;
+}
+
+.search-form input {
+  padding: 8px;
+  display: inline;
+  outline: none;
+  border: none;
+}
+
+.search-field {
+  width: 70%;
+}
+
+.btn-search {
+  width: 30%;
+  background: var(--green);
+  color: white;
+}
+
+#filter-connect {
+  width: 100%;
+  border-radius: 4px;
+  padding: 4px 10px;
+  border: 1px solid grey;
+}
+
+.checked {
+  color: orange;
+}
+
+.scroll-div {
+  height: 75vh;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.t-head {
+  background: var(--gray-dark);
+  color: #fff;
+}
+
+.btn-action {
+  font-size: 25px;
+  margin-right: 4px;
+}
+
+/* modals  */
+
+.modal-header {
+  background: var(--gray-dark);
+  color: #fff;
+}
+
+.btn-cross {
+  color: #fff;
+  font-size: 20px;
+}
+
+.btn-success {
+  background: var(--green);
+}
+
+#arrow {
+  font-size: 22px;
+  cursor: pointer;
+  color: rgb(219, 219, 219);
+}
+
+#arrow:hover {
+  color: #fff;
+}
+.btn-danger {
+  background: var(--danger);
+}
+
+.btn-danger:hover {
+  background: #ce2647;
+}
