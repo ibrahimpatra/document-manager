@@ -26,8 +26,8 @@ import mimetypes
 # Create your views here.
 s3_client = boto3.client("s3",
                          region_name='ap-south-1',
-                         aws_access_key_id='AKIATVILSDKCJEMM62WE',
-                         aws_secret_access_key='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')
+                         aws_access_key_id='',
+                         aws_secret_access_key='')
 
 
 @login_required
